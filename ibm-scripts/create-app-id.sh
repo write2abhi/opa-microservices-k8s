@@ -40,6 +40,7 @@ function ibmcloud_login() {
 
 function setup() {
   _out Creating App ID service instance
+  ibmcloud target -g Default
   ibmcloud resource service-instance-create app-id-cloud-native-starter appid lite $IBM_CLOUD_REGION
   ibmcloud resource service-alias-delete app-id-cloud-native-starter -f
   ibmcloud resource service-alias-create app-id-cloud-native-starter --instance-name app-id-cloud-native-starter

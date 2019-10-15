@@ -34,8 +34,9 @@ public class Manage {
 		System.out.println("com.ibm.web-api.apis.Manage.manage");
 		System.out.println(this.jwtPrincipal);
 
-		String principalEmail = this.jwtPrincipal.getClaim("email");
-		if (principalEmail.equalsIgnoreCase("admin@demo.email")) {
+	//	String principalEmail = this.jwtPrincipal.getClaim("email");
+		String principalEmail = this.jwtPrincipal.getClaim("role");
+		if (principalEmail.equalsIgnoreCase("admin")) {
 			JsonObject output = Json.createObjectBuilder().add("message", "success").build();
 			return Response.ok(output).build();
 		}
