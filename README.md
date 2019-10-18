@@ -1,8 +1,6 @@
-## Cloud Native Starter for Java EE based Microservices on Kubernetes and Istio
+## Open Policy Agent integration with Microservices
 
-This project contains sample code that demonstrates how to get started with cloud-native applications and microservice based architectures. 
-
-The project focusses on how to build microservices with Java EE and the open source technologies [Eclipse MicroProfile](https://microprofile.io/), [Eclipse OpenJ9](https://www.eclipse.org/openj9/), [AdoptOpenJDK](https://adoptopenjdk.net/) and [Open Liberty](https://openliberty.io/).
+This project consists sample code to deploy cloud-native-starter microservice on k8s with OPA to enforce authorization policies. 
 
 The microservices can easily be deployed on Kubernetes environments running [Istio](https://istio.io/) like [Minikube](https://kubernetes.io/docs/setup/minikube/), [IBM Cloud Kubernetes Service](https://www.ibm.com/cloud/container-service), [Minishift](https://docs.okd.io/latest/minishift/index.html) or [OpenShift on the IBM Cloud](https://cloud.ibm.com/docs/containers?topic=containers-openshift_tutorial).
 
@@ -66,17 +64,12 @@ $ cd ${ROOT_FOLDER}
 $ docker run -v $ROOT_FOLDER/:/cloud-native-starter -it --rm ibmcom/ibm-cloud-developer-tools-amd64
 ```
 
-Deploy (and redeploy):
+**Deploy Microservices:**
 
 ```
 $ cd ${ROOT_FOLDER}
-$ scripts/check-prerequisites.sh
-$ scripts/deploy-articles-java-jee.sh
-$ scripts/deploy-web-api-java-jee.sh
-$ scripts/deploy-authors-nodejs.sh
-$ scripts/deploy-istio-ingress-v1.sh
-$ scripts/deploy-web-app-vuejs.sh
-$ scripts/show-urls.sh
+
+bash scripts/deploy-articles-java-jee.sh \ && scripts/deploy-web-api-java-jee.sh \ && scripts/deploy-authors-nodejs.sh \ && scripts/deploy-authentication-nodejs.sh \ && scripts/deploy-web-app-vuejs-authentication.sh \ && scripts/deploy-istio-ingress-v1.sh \ && scripts/show-urls.sh
 ```
 
 After running the scripts above, you will get a list of all URLs in the terminal.
@@ -101,6 +94,38 @@ At this point you have seen the "base line" of our Cloud Native Starter. The fol
 * [Distributed Logging and Monitoring](documentation/DemoDistributedLoggingMonitoring.md)
 * [Persistence with Java Persistence API (JPA)](documentation/DemoJPA.md)
 
+We will mostly focus on Authentication and Authorization part. Authentication part will be managed by IBM AppID and Authorization part will be managed by Open Policy Agent(OPA). 
+
+**Deploy OPA:**
+```
+kubectl apply -f deploy-opa-k8s/k8s-menifests/
+```
+Get the URL of OPA using minikube:
+```
+OPA_URL=$(minikube service opa --url -n opa)
+```
+Now you can query OPA’s API:
+```
+curl $OPA_URL/v1/data
+```
+OPA will respond with the greeting from the policy (the pod hostname will differ):
+```
+{
+  "result": {
+    "example": {
+      "greeting": "hello from pod \"opa-78ccdfddd-xplxr\"!"
+    }
+  }
+}
+```
+At this point we have verified that OPA is up and running. 
+
+**Load OPA policy:**
+To inject the OPA policy run the following command:
+```
+curl -X PUT --data-binary @deploy-opa-k8s/demo.rego \
+  $OPA_URL/v1/policies/demo
+```
 
 ### Cleanup
 
@@ -121,58 +146,3 @@ $ scripts/delete-web-app-vuejs.sh
 $ scripts/delete-istio-ingress.sh
 ```
 
-### Authors
-
-* [Niklas Heidloff](https://twitter.com/nheidloff)
-* [Harald Uebele](https://twitter.com/harald_u)
-* [Thomas Südbröcker](https://twitter.com/tsuedbroecker)
-
-
-### Documentation - Overview
-
-The following [slides](https://github.com/nheidloff/cloud-native-starter/blob/master/documentation/OneHourTalk.pdf) summarize this repo:
-
-[![Slides](images/slides.png)](documentation/OneHourTalk.pdf)
-
-* [Project Description and Design Principles](http://heidloff.net/article/example-java-app-cloud-kubernetes)
-* Presentation at We Are Developers (30 mins): [How to develop your first cloud-native Applications with Java](http://heidloff.net/recording-of-talk-how-to-develop-your-first-cloud-native-applications-with-java/)
-* Recording of Jakarta Tech Talk (45 mins): [How to develop your first cloud-native Applications with Java](http://heidloff.net/article/recording-jakarta-tech-talk-how-to-develop-microservices/)
-* [Hands-on workshop with MircoProfile, Kubernetes and Istio](https://github.com/IBM/cloud-native-starter/tree/master/workshop) (three hours)
-* [Hands-on workshop YouTube playlist](https://ibm.biz/Bdzpdp)(6 * 3 min)
-* [Hands-on workshop build and deploy one microservice using Java, MircoProfile and Kubernetes](https://github.com/IBM/cloud-native-starter/tree/master/workshop-one-service) (one hour)
-
-
-### Documentation - Kubernetes and MicroProfile
-
-* [How to build and run a Hello World Java Microservice](http://heidloff.net/article/how-to-build-and-run-a-hello-world-java-microservice/)
-* [Dockerizing Java MicroProfile Applications](http://heidloff.net/article/dockerizing-container-java-microprofile)
-* [Developing resilient Microservices with Istio and MicroProfile](http://heidloff.net/article/resiliency-microservice-microprofile-java-istio)
-* [Managing Microservices Traffic with Istio](https://haralduebele.blog/2019/03/11/managing-microservices-traffic-with-istio/)
-* [Web Application to demo Traffic Management with Istio](http://heidloff.net/article/sample-app-manage-microservices-traffic-istio)
-* [Implementing and documenting REST APIs with JavaEE](http://heidloff.net/article/rest-apis-microprofile-javaee-jaxrs)
-* [Invoking REST APIs from Java Microservices](http://heidloff.net/invoke-rest-apis-java-microprofile-microservice)
-* [Prometheus Metrics for MicroProfile Microservices in Istio](http://heidloff.net/article/prometheus-metrics-microprofile-microservices-istio/)
-* [Distributed logging with LogDNA and Monitoring with Sysdig](https://haralduebele.blog/2019/04/08/whats-going-on-in-my-cluster/)
-* [Implementing Health Checks with MicroProfile and Istio](http://heidloff.net/article/implementing-health-checks-microprofile-istio)
-* [Configuring Microservices with MicroProfile and Kubernetes](http://heidloff.net/article/configuring-java-microservices-microprofile-kubernetes/)
-* [Authenticating Web Users with OpenID and JWT](http://heidloff.net/article/authenticating-web-users-openid-connect-jwt/)
-* [Authorization in Cloud-Native Applications via OpenID and Istio](http://heidloff.net/article/authentication-authorization-openid-connect-istio)
-* [Authorization in Microservices with MicroProfile](http://heidloff.net/article/authorization-microservices-java-microprofile/)
-* [Persistence for Java Microservices in Kubernetes via JPA](http://heidloff.net/article/persistence-java-microservices-kubernetes-jpa/)
-* [Setup of a Local Kubernetes and Istio Dev Environment](http://heidloff.net/article/setup-local-development-kubernetes-istio)
-* [Moving from Minikube to IBM Cloud Kubernetes Service](https://haralduebele.blog/2019/04/04/moving-from-minikube-to-ibm-cloud-kubernetes-service/)
-* [Recorded demos: Traffic management, resiliency, authorization, logging](http://heidloff.net/article/how-to-develop-your-first-cloud-native-applications-with-java/)
-* [Using Quarkus to run Java Apps on Kubernetes](http://heidloff.net/article/quarkus-javaee-microprofile-kubernetes)
-* [Debugging Microservices running in Kubernetes](http://heidloff.net/article/debugging-microservices-kubernetes)
-* [Deploying MicroProfile Microservices with Tekton](http://heidloff.net/article/deploying-microprofile-microservices-tekton/)
-
-
-### Documentation - OpenShift
-
-* [Setting up a cloud-native Sample App on Minishift in an Hour](http://heidloff.net/article/setup-cloud-native-sample-app-minishift/)
-* [Deploying the Cloud Native Starter microservices on Minishift](https://haralduebele.blog/2019/07/03/deploying-the-cloud-native-starter-microservices-on-minishift/)
-* [Deploying the Cloud Native Starter example on Red Hat OpenShift on the IBM Cloud](https://haralduebele.blog/2019/07/10/deploying-the-cloud-native-starter-example-on-red-hat-openshift-on-the-ibm-cloud/)
-* [Source to Image Builder for Open Liberty Apps on OpenShift](http://heidloff.net/article/source-to-image-builder-open-liberty-openshift/)
-* [How to develop Open Liberty Microservices on OpenShift](http://heidloff.net/article/how-to-develop-open-liberty-microservices-openshift/)
-* [Deploying Open Liberty Microservices to OpenShift](http://heidloff.net/article/deploying-open-liberty-microservices-openshift/)
-* [Accessing private GitLab Repositories from OpenShift](http://heidloff.net/article/accessing-private-gitlab-repositories-from-openshift/)
