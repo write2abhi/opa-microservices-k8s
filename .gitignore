@@ -23,6 +23,8 @@ k8s-setup.sh
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.env.local
+.env.*.local
 .idea
 .vscode
 *.suo
@@ -43,7 +45,6 @@ istio/prometheus-config-org.yaml
 istio/prometheus-config-new.yaml
 auth-java-jee
 auth-java-jee-ref
-authentication-nodejs/.env
 authentication-nodejs/package-lock.json
 auth-nodejs2
 istio/web-api.*
