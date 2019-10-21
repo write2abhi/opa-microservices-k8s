@@ -6,17 +6,7 @@ The microservices can easily be deployed on Kubernetes environments running [Ist
 
 The project showcases the following functionality:
 
-* [Containerized Java EE Microservices](documentation/DemoJavaImage.md)
-* [Exposing REST APIs](documentation/DemoExposeRESTAPIs.md)
-* [Consuming REST APIs](documentation/DemoConsumeRESTAPIs.md)
-* [Traffic Routing](documentation/DemoTrafficRouting.md)
-* [Resiliency](documentation/DemoResiliency.md)
 * [Authentication and Authorization](documentation/DemoAuthentication.md)
-* [Metrics](documentation/DemoMetrics.md)
-* [Health Checks](documentation/DemoHealthCheck.md)
-* [Configuration](documentation/DemoConfiguration.md)
-* [Distributed Logging and Monitoring](documentation/DemoDistributedLoggingMonitoring.md)
-* [Persistence with Java Persistence API (JPA)](documentation/DemoJPA.md)
 
 This diagram shows the key components:
 
