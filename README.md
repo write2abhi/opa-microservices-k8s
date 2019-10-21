@@ -30,6 +30,8 @@ The following instructions describe how to install everything locally on **Minik
 
 **Important:** Before the microservices can be installed, make sure you've set up Minikube and Istio correctly or follow these [instructions](documentation/SetupLocalEnvironment.md) to set up Minikube and Istio from scratch. This should not take longer than 30 minutes.
 
+**Note:** This demo is tested with Minikube and Istio default setup from original repo [here](https://github.com/IBM/cloud-native-starter). However Istio is not a requirement.
+
 Before deploying the application, get the code:
 
 ```
