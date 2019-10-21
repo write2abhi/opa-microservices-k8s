@@ -1,4 +1,4 @@
-## Demo: Authentication and Authorization
+## Demo: Authentication
 
 In order to authenticate users, you need an OpenID identity provider. 
 
@@ -61,43 +61,3 @@ After the login, the Vue.js application stores the id_token if the Vuex state.
 Check out the [animated gif](../images/login.gif) to see the authentication flow.
 
 <kbd><img src="../images/login.gif" /></kbd>
-
-
-### Authorization via Istio
-
-Invocations of the endpoint 'create' of the 'web-api' service have been [protected](https://github.com/nheidloff/cloud-native-starter/blob/master/istio/protect-web-api.yaml.template) via Istio. Only authenticated users can invoke this endpoint by passing in the bearer token in the HTTP header.
-
-When you invoke the endpoint without bearer token, you get an exception.
-
-<kbd><img src="../images/endpoint-protection-istio-1.png" /></kbd>
-
-When you log in from the web application, the token is stored in Vuex. After this 'Create Article' can be invoked from the dropdown.
-
-<kbd><img src="../images/endpoint-protection-istio-2.png" /></kbd>
-
-This screenshot shows the page to enter information about a new article:
-
-<kbd><img src="../images/endpoint-protection-istio-3.png" /></kbd>
-
-When the REST API is invoked, the bearer is added:
-
-<kbd><img src="../images/endpoint-protection-istio-4.png" /></kbd>
-
-Watch the [animated gif](../images/endpoint-protection-istio.gif) to see the flow in action.
-
-
-### Authorization via MicroProfile
-
-In order to protect functionality on a more fine-grained level, authorization can be handled in the business logic of microservices.
-
-From the web application's dropdown 'Manage Application' can be invoked which triggers the endpoint '[manage](../web-api-java-jee/src/main/java/com/ibm/webapi/apis/Manage.java)' of the 'web-api' microservice.
-
-Only the user 'admin@demo.email' is allowed to invoke this endpoint.
-
-<kbd><img src="../images/authorization-microprofile-admin.png" /></kbd>
-
-For the user 'user@demo.email' an error is thrown.
-
-<kbd><img src="../images/authorization-microprofile-user.png" /></kbd>
-
-Watch the [animated gif](../images/authorization-microprofile.gif) to see the flow in action.
