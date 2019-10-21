@@ -5,7 +5,7 @@ default allow = false
 # Allow users with admin role to access /manage endpoint .
 allow {
   input.method == "POST" 
-  input.path = ["web-api", "v1", "manage"]
+  input.path = ["web-api", "v1", "manage"]    //web-api/v1/manage
   token.payload.role == "admin"
 }
 
