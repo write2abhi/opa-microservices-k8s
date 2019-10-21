@@ -72,19 +72,9 @@ Example URL to open the web app: http://192.168.99.100:31380
 
 Example API endpoint: http://192.168.99.100:31380/web-api/v1/getmultiple
 
-At this point you have seen the "base line" of our Cloud Native Starter. The following documents describe how to implement additional functionality:
+At this point you have seen the "base line" of our Cloud Native Starter. The following document describe how to implement Authentication and Authorization. 
 
-* [Containerized Java EE Microservices](documentation/DemoJavaImage.md)
-* [Exposing REST APIs](documentation/DemoExposeRESTAPIs.md)
-* [Consuming REST APIs](documentation/DemoConsumeRESTAPIs.md)
-* [Traffic Routing](documentation/DemoTrafficRouting.md)
-* [Resiliency](documentation/DemoResiliency.md)
-* [Authentication and Authorization](documentation/DemoAuthentication.md)
-* [Metrics](documentation/DemoMetrics.md)
-* [Health Checks](documentation/DemoHealthCheck.md)
-* [Configuration](documentation/DemoConfiguration.md)
-* [Distributed Logging and Monitoring](documentation/DemoDistributedLoggingMonitoring.md)
-* [Persistence with Java Persistence API (JPA)](documentation/DemoJPA.md)
+* [Setup authentication with IBM APP ID](documentation/DemoAuthentication.md)
 
 We will mostly focus on Authentication and Authorization part. Authentication part will be managed by IBM AppID and Authorization part will be managed by Open Policy Agent(OPA). 
 
