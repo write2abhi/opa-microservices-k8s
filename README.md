@@ -12,11 +12,6 @@ This diagram shows the key components:
 
 <kbd><img src="images/architecture-2.png" /></kbd>
 
-The next screenshot shows the web application. More screenshots are in the [images](images) folder.
-
-<kbd><img src="images/web-app.png" /></kbd>
-
-
 ### Setup
 
 The sample application can be run in four different environments:
