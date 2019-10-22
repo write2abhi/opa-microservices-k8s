@@ -130,5 +130,6 @@ Check out the [animated gif](../images/login.gif) to see the authentication flow
 
 <kbd><img src="../images/login.gif" /></kbd>
 
-
-
+References:
+https://cloud.ibm.com/docs/services/appid?topic=appid-tutorial-roles
+https://github.com/ibm-cloud-security/appid-postman
