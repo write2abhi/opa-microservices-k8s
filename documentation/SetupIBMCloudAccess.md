@@ -7,8 +7,8 @@ First get an [IBM Cloud Lite account](http://ibm.biz/nheidloff). It's free, ther
 **Get the code**
 
 ```
-$ git clone https://github.com/nheidloff/cloud-native-starter.git
-$ cd cloud-native-starter
+$ git clone https://github.com/write2abhi/opa-microservices-k8s.git
+$ cd opa-microservices-k8s
 ```
 
 **Prerequisites**

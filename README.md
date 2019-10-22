@@ -55,30 +55,17 @@ Docker always needs to be installed locally. The tools git, curl and kubectl (an
 $ cd ${ROOT_FOLDER}
 $ docker run -v $ROOT_FOLDER/:/cloud-native-starter -it --rm ibmcom/ibm-cloud-developer-tools-amd64
 ```
+## Setup Authentication with IBM App ID
+Before deploying the microservices on Minikube you need to create an account on IBM Cloud and configure App ID instance. Refer the documentation below.  
 
-**Deploy Microservices with IBM APP ID authentication:**
+[Setup authentication with IBM APP ID](documentation/DemoAuthentication.md)
 
-```
-$ cd ${ROOT_FOLDER}
+At this stage we have successfully configured role based user authentication. Next, we will deploy and configure OPA to enforce authorization policies. 
 
-bash scripts/deploy-articles-java-jee.sh \ && scripts/deploy-web-api-java-jee.sh \ && scripts/deploy-authors-nodejs.sh \ && scripts/deploy-authentication-nodejs.sh \ && scripts/deploy-web-app-vuejs-authentication.sh \ && scripts/deploy-istio-ingress-v1.sh \ && scripts/show-urls.sh
-```
+## Authorization via OPA
+In order to protect functionality on a more fine-grained level, authorization can be handled with Open Policy Agent(OPA) rather than writing it in the business logic of microservices. 
 
-After running the scripts above, you will get a list of all URLs in the terminal.
-
-<kbd><img src="images/urls.png" /></kbd>
-
-Example URL to open the web app: http://192.168.99.100:31380
-
-Example API endpoint: http://192.168.99.100:31380/web-api/v1/getmultiple
-
-At this point you have seen the "base line" of our Cloud Native Starter. The following document describe how to implement Authentication and Authorization. 
-
-* [Setup authentication with IBM APP ID](documentation/DemoAuthentication.md)
-
-We will mostly focus on Authentication and Authorization part. Authentication part will be managed by IBM AppID and Authorization part will be managed by Open Policy Agent(OPA). 
-
-**Deploy OPA:**
+Deploy the OPA server in same K8s cluster where microservices are deployed. By default it will be deployed in opa namespace. 
 ```
 kubectl apply -f deploy-opa-k8s/k8s-menifests/
 ```
@@ -103,11 +90,26 @@ OPA will respond with the greeting from the policy (the pod hostname will differ
 At this point we have verified that OPA is up and running. 
 
 **Load OPA policy:**
+
 To inject the OPA policy run the following command:
 ```
 curl -X PUT --data-binary @deploy-opa-k8s/demo.rego \
   $OPA_URL/v1/policies/demo
 ```
+
+To test the authorization flow, login to the web application and access 'Manage Application' from dropdown which triggers the endpoint 'manage' of the 'web-api' microservice.
+
+Only the user 'admin@demo.email' with 'admin' role is allowed to invoke this endpoint. 
+
+<kbd><img src="images/authorization-microprofile-admin.png" /></kbd>
+
+For the user 'user@demo.email' an error is thrown.
+
+<kbd><img src="images/authorization-microprofile-user.png" /></kbd>
+
+Watch the [animated gif](images/authorization-microprofile.gif) to see the flow in action.
+
+You can refere the source code of /manage API endpoint [here](web-api-java-jee/src/main/java/com/ibm/webapi/apis/Manage.java). By default this microservice call OPA server with service name as http://opa.opa:8181. you can configure it according to your OPA service url. 
 
 ### Cleanup
 
@@ -121,10 +123,10 @@ You can also delete single components:
 
 ```
 $ scripts/delete-articles-java-jee.sh
-$ scripts/delete-articles-java-jee-quarkus.sh
 $ scripts/delete-web-api-java-jee.sh
 $ scripts/delete-authors-nodejs.sh
-$ scripts/delete-web-app-vuejs.sh
-$ scripts/delete-istio-ingress.sh
+$ scripts/delete-authentication-nodejs.sh
+$ scripts/delete-web-app-vuejs-authentication.sh
+$ scripts/delete-istio-ingress-v1.sh
 ```
 
