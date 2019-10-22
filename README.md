@@ -35,8 +35,8 @@ The following instructions describe how to install everything locally on **Minik
 Before deploying the application, get the code:
 
 ```
-$ git clone https://github.com/IBM/cloud-native-starter.git
-$ cd cloud-native-starter
+$ git clone https://github.com/write2abhi/opa-microservices-k8s.git
+$ cd opa-microservices-k8s
 $ ROOT_FOLDER=$(pwd)
 ```
 
@@ -56,7 +56,7 @@ $ cd ${ROOT_FOLDER}
 $ docker run -v $ROOT_FOLDER/:/cloud-native-starter -it --rm ibmcom/ibm-cloud-developer-tools-amd64
 ```
 
-**Deploy Microservices:**
+**Deploy Microservices with IBM APP ID authentication:**
 
 ```
 $ cd ${ROOT_FOLDER}
