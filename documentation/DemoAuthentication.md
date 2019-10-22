@@ -43,7 +43,7 @@ You can add custom attributes to user profiles and get these attributes in JWT t
 
 Now we will add the custom attributes to users already created by create-app-id.sh script. 
 
-- Go to Resource List > Services and you will see one service instance is created. click on app-id-<instance-name>. 
+- Go to Resource List > Services and you will see one service instance is created. click on app-id instance name. 
 - Go to User Profiles and you will see two user already created. Now click on admin user id listed under **Identifier** field and edit the Custom Attributes field. You can add any arbitary JSON objects here. Add below attribute and Save. 
 ```
 {
